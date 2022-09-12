@@ -3,10 +3,10 @@ name: WakaTime Stats
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
   schedule:
     - cron: "0 0 * * *"
   # Manual triggers with workflow_dispatch
