@@ -88,7 +88,7 @@ def make_box(languages: list[Language]) -> list[str]:
         process: str
         percent: str
         result.append(
-            name.ljust(15) + '🕓 ' + time.ljust(7) + process.ljust(26) +
+            name.ljust(10) + '🕓 ' + time.ljust(7) + process.ljust(26) +
             percent.rjust(5)
         )
     return result
@@ -109,17 +109,16 @@ async def main():
         ) as response:
             waka_result = WakaResult.parse_obj((await response.json())['data'])
     box_str = '\n'.join(make_box(waka_result.languages[:5]))
+    print(box_str)
     files = {FILE_NAME: {'content': box_str}}
 
     for g in github_client.gists():
         if g.id == GIST_ID:
             gist = g
     if not gist:
-        github_client.create_gist(
-            "Weekly development breakdown", files, public=True
-        )
+        github_client.create_gist(FILE_NAME, files, public=True)
     else:
-        gist.edit("Weekly development breakdown", files=files)
+        gist.edit(FILE_NAME, files=files)
     print("Updating gist successfully")
 
     await client.close()
